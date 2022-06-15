@@ -1,0 +1,19 @@
+{
+  "name": "login_api",
+  "version": "1.0.0",
+  "description": "Creating a login api using jwt",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sanjai24/LoginAPI.git"
+  },
+  "author": "Sanjai S",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sanjai24/LoginAPI/issues"
+  },
+  "homepage": "https://github.com/Sanjai24/LoginAPI#readme"
+}
