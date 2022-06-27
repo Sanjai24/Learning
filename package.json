@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/Sanjai24/LoginAPI/issues"
   },
-  "homepage": "https://github.com/Sanjai24/LoginAPI#readme"
+  "homepage": "https://github.com/Sanjai24/LoginAPI#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.1",
+    "dotenv-expand": "^8.0.3",
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3"
+  }
 }
