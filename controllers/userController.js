@@ -23,27 +23,83 @@ const userController = {
             
             if(UserData){
                 let [User] = await UserModel.CreateUser(UserData);
-                res.send('new signup');
+                res.send(
+                    {
+                        status: true,
+                        message:  'new signup',
+                        
+                    }
+                   );
             }
             else{
-                res.send('No Body');
+                res.send({
+                    status: false,
+                    message: 'No Body'});
             }
         }
         catch(err){
-            res.send(err);
+            res.send({
+                status: false,
+                message:  err
+            }
+                );
         }
        
     },
 
     async login_post(req,res){
-        let [getAllUser] = await UserModel.GetUsers();
-        if(getAllUser){
-            res.send(getAllUser);
+        try{
+            let{
+                email, 
+                password
+            } = req.body;
+
+            var UserData = {
+                email,
+                password
+            };
+            let [getUser] = await UserModel.GetUser(UserData);
+            console.log(getUser[0].password);
+            console.log(UserData.password);
+            if(UserData){
+                if(UserData.password == getUser[0].password){
+                    res.send({
+                        status: "true",
+                        message: "Logged In successfully",
+                        data: getUser,
+                    });
+                }
+                else{
+                    res.send({
+                        status: "false",
+                        message: "Wrong password",
+                        //data: getUser,
+                    });
+                }
+            }
+            else{
+                res.send({
+                    status: "false",
+                    message: "No such user exist"
+                });
+            }
+            //let [getAllUser] = await UserModel.GetUsers();
+        // if(getAllUser){
+        //     res.send(getAllUser);
+        // }
+        // else{
+        //     res.send("No Users");
+        // }
+        //res.send('new login');
         }
-        else{
-            res.send("No Users");
+        catch(err)
+        {
+            res.send({
+                status: false,
+                message:  err
+            }
+                );
         }
-        res.send('new login');
     }
 
 }
