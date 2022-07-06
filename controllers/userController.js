@@ -1,4 +1,8 @@
 const UserModel = require("../models/userModel");
+const jwt = require("jsonwebtoken");    
+const moment = require('moment');
+
+const maxAge = 3*24*60*60;
 
 const userController = {
     async signup_get(req,res){
@@ -10,6 +14,7 @@ const userController = {
     },
 
     async signup_post(req,res){
+        
         try{
             let{
                 email,
@@ -22,28 +27,63 @@ const userController = {
             };
             
             if(UserData){
-                let [User] = await UserModel.CreateUser(UserData);
-                res.send(
-                    {
-                        status: true,
-                        message:  'new signup',
-                        
-                    }
-                   );
+                let [User] = await UserModel.CreateUser(UserData);                  
+                let [Det] = await UserModel.GetUser(UserData);
+                console.log(Det);
+            
+            id = Det[0].user_id;
+            if(id){
+                var insert_id = {"user_id": id}
+                let payload = {
+                    "user_id": Det[0].user_id,
+                    "email" : Det[0].email,
+                    "password": Det[0].password
+                }
+                let options = {expiresIn: process.env.JWT_EXPIRE_TIME, issuer: process.env.JWT_ISSUER};
+                let secret = 'random';
+                let token = jwt.sign(payload, secret, options);
+                let dd =  Date(moment().add(31, 'days'))
+                console.log("dd" + dd);
+                const cookieOptions = {
+                    httpOnly: true, 
+                    expires: new Date(moment().add(31, 'days')),
+                    overwrite: true
+                };
+                
+                res.cookie('x-access-token', token, cookieOptions);
+                console.log("------------->", token);
+                res.send({
+                    status: true,
+                    message: 'Registration Successful',
+                    data: payload,
+                    token: token
+                });
             }
             else{
                 res.send({
                     status: false,
-                    message: 'No Body'});
+                    message: 'No User created',
+                    });
+            }
+           
+            }
+            
+            else{
+                res.send({
+                    status: false,
+                    message: 'No Body',
+                    });
             }
         }
         catch(err){
+            console.log(err);
             res.send({
                 status: false,
-                message:  err
+                message:  "None " + err
             }
                 );
         }
+        
        
     },
 
@@ -64,14 +104,14 @@ const userController = {
             if(UserData){
                 if(UserData.password == getUser[0].password){
                     res.send({
-                        status: "true",
+                        status: true,
                         message: "Logged In successfully",
                         data: getUser,
                     });
                 }
                 else{
                     res.send({
-                        status: "false",
+                        status: false,
                         message: "Wrong password",
                         //data: getUser,
                     });
@@ -79,7 +119,7 @@ const userController = {
             }
             else{
                 res.send({
-                    status: "false",
+                    status: false,
                     message: "No such user exist"
                 });
             }
