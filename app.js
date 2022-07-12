@@ -4,8 +4,10 @@ const app = express();
 const userRoutes = require('./routes/userRoutes.js');
 const requireAuth = require('./middleware/auth_middleware');
 const cors = require('cors');
+const bodyparser = require('body-parser');
 
-app.use(express.json());
+app.use(express);
+app.use(bodyparser.json);
 app.use(cookieParser());
 app.use(cors());
 //app.get('/home',  requireAuth, (req, res) => res.render('home') );
