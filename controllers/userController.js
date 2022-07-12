@@ -5,12 +5,21 @@ const moment = require('moment');
 const maxAge = 3*24*60*60;
 
 const userController = {
+    async home_get(req, res){
+        res.render('home');
+    },
+
     async signup_get(req,res){
         res.render('signup');
     },
 
     async login_get(req,res){
         res.render('login');
+    },
+
+    async logout_post(req, res){
+        res.cookie('jwt', '', {maxAge : 1});
+        
     },
 
     async signup_post(req,res){
@@ -27,44 +36,11 @@ const userController = {
             };
             
             if(UserData){
-                let [User] = await UserModel.CreateUser(UserData);                  
-                let [Det] = await UserModel.GetUser(UserData);
-                console.log(Det);
-            
-            id = Det[0].user_id;
-            if(id){
-                var insert_id = {"user_id": id}
-                let payload = {
-                    "user_id": Det[0].user_id,
-                    "email" : Det[0].email,
-                    "password": Det[0].password
-                }
-                let options = {expiresIn: process.env.JWT_EXPIRE_TIME, issuer: process.env.JWT_ISSUER};
-                let secret = 'random';
-                let token = jwt.sign(payload, secret, options);
-                let dd =  Date(moment().add(31, 'days'))
-                console.log("dd" + dd);
-                const cookieOptions = {
-                    httpOnly: true, 
-                    expires: new Date(moment().add(31, 'days')),
-                    overwrite: true
-                };
-                
-                res.cookie('x-access-token', token, cookieOptions);
-                console.log("------------->", token);
+                let [User] = await UserModel.CreateUser(UserData);   
                 res.send({
                     status: true,
                     message: 'Registration Successful',
-                    data: payload,
-                    token: token
-                });
-            }
-            else{
-                res.send({
-                    status: false,
-                    message: 'No User created',
-                    });
-            }
+            });
            
             }
             
@@ -99,21 +75,42 @@ const userController = {
                 password
             };
             let [getUser] = await UserModel.GetUser(UserData);
-            console.log(getUser[0].password);
-            console.log(UserData.password);
-            if(UserData){
+            
+            if(getUser[0]){
+                console.log(getUser[0]);
+                console.log(getUser[0].password);
+                console.log(UserData.password);
                 if(UserData.password == getUser[0].password){
+                    let payload = {
+                        "user_id" : getUser[0].user_id,
+                        "email" : getUser[0].email,
+                        "password" : getUser[0].password
+                    }
+                    let options = {
+                        expiresIn : process.env.JWT_EXPIRE_TIME
+                    }
+                    let secret = process.env.JWT_SECRET;
+                    let token = jwt.sign(payload, secret, options)
+
+                    const cookieOptions = {
+                        httpOnly: true, 
+                        expires: new Date(moment().add(31, 'days')),
+                        overwrite: true
+                    }
+
+                    res.cookie('x-access-token', token, cookieOptions);
+                    console.log('---------->', token);
                     res.send({
                         status: true,
                         message: "Logged In successfully",
-                        data: getUser,
+                        data: payload,
+                        token: token
                     });
                 }
                 else{
                     res.send({
                         status: false,
                         message: "Wrong password",
-                        //data: getUser,
                     });
                 }
             }
@@ -136,7 +133,7 @@ const userController = {
         {
             res.send({
                 status: false,
-                message:  err
+                message:  "Error" + err
             }
                 );
         }
