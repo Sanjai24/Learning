@@ -23,7 +23,7 @@ const userController = {
     },
 
     async signup_post(req,res){
-        
+        console.log("Atleast connected");
         try{
             let{
                 email,
