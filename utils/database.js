@@ -13,7 +13,7 @@ let database = mysql.createPool(
     }
 );
 
-database.connect(function(err){
+database.getConnection(function(err){
     if(err){
         console.log('Database connection failed' + err);
     }
