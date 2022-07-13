@@ -3,14 +3,23 @@ require('dotenv').config();
 
 let database = mysql.createPool(
     {
-        user: 'root',
-        password: 'password',
+        user: process.env.RDS_USERNAME,
+        password: process.env.RDS_PASSWORD,
         database: 'authenticate',
-        host: 'logindb.c9ouq2uucnm1.us-east-1.rds.amazonaws.com',
-        port: 3306,
+        host: process.env.RDS_HOSTNAME,
+        port: process.env.RDS_PORT,
         multipleStatements: true,
 
     }
 );
+
+database.connect(function(err){
+    if(err){
+        console.log('Database connection failed' + err);
+    }
+    else{
+        console.log('Database connected');
+    }
+})
 
 module.exports = database;
