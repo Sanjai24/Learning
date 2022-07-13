@@ -3,11 +3,11 @@ require('dotenv').config();
 
 let database = mysql.createPool(
     {
-        user: process.env.RDS_USERNAME,
-        password: process.env.RDS_PASSWORD,
+        user: 'root',
+        password: '',
         database: 'authenticate',
-        host: process.env.RDS_HOSTNAME,
-        port: process.env.RDS_PORT,
+        host: 'localhost',
+        port: 3306,
         multipleStatements: true,
 
     }
