@@ -8,15 +8,24 @@ const fcmController = {
     async token_post(req, res) { 
         try{
             let{ token } = req.body;
-            console("token generated ----->", token);
+            console.log("token generated ----->", token);
+            res.send({
+                status: true,
+                message: "token sent successfully",
+                });
             return token;
         }
         catch(err){
-            res.send("error", err);
+            console.log("Some ", err);
+            res.send({
+                status: false,
+                message: `err ${err}`,
+                });
         }
     }
 }
 var tokencreated = fcmController.token_post;
+console.log("created token ", tokencreated);
 var message = {
     to: tokencreated,
 
