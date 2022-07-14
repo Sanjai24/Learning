@@ -24,6 +24,7 @@
     "dotenv-expand": "^8.0.3",
     "express": "^4.18.1",
     "fcm-node": "^1.6.1",
+    "forever": "^4.0.3",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.3",
     "mysql2": "^2.3.3",
