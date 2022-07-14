@@ -28,9 +28,9 @@ var tokencreated = fcmController.token_post;
 console.log("created token ", tokencreated);
 var message = {
     
-    payload: {
+    payload: 
         tokencreated
-    },
+    ,
     notification : {
         title: 'Testing notification',
         body: 'This is to notify that the test is success'
