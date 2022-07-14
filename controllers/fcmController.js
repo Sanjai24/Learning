@@ -27,7 +27,7 @@ const fcmController = {
 var tokencreated = fcmController.token_post;
 console.log("created token ", tokencreated);
 var message = {
-    to: tokencreated,
+    to: {tokencreated},
 
     notification : {
         title: 'Testing notification',
