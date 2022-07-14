@@ -11,7 +11,7 @@ const fcmController = {
             console.log("token generated ----->", token);
             res.send({
                 status: true,
-                message: "token sent successfully",
+                message: `token sent successfully ${token}`,
                 });
             return token;
         }
