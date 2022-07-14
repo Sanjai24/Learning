@@ -12,7 +12,7 @@ const fcmController = {
             return token;
         }
         catch(err){
-            res.send(err);
+            res.send("error", err);
         }
     }
 }
