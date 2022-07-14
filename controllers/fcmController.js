@@ -28,7 +28,7 @@ var tokencreated = fcmController.token_post;
 console.log("created token ", tokencreated);
 var message = {
     
-    payload: 
+    to: 
         tokencreated
     ,
     notification : {
