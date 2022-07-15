@@ -1,8 +1,8 @@
 const FCM = require('fcm-node');
 
-var serverKey = require('./server_key.json');
+//var serverKey = require('./server_key.json');
 
-var fcm = new FCM(serverKey);
+var fcm = new FCM('AAAAKptjfW8:APA91bFdksLlT-bddkp1hmAy4ZORnO9W8ZP6kJK9mbshqGS3yHbXY3hvQmihDQW_HoHqoaKEjTEQkDkbBc1a_A-0WJ3LkExJJrB_SGwM3Xe3EcFO8zYAfE-HMayMFp2bqPXmRjg_7SZi');
 
 const fcmController = {
     async token_post(req, res) { 
