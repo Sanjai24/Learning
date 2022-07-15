@@ -13,23 +13,13 @@ const fcmController = {
                 status: true,
                 message: `token sent successfully ${token}`,
                 });
-            return token;
-        }
-        catch(err){
-            console.log("Some ", err);
-            res.send({
-                status: false,
-                message: `err ${err}`,
-                });
-        }
-    }
-}
-var tokencreated = fcmController.token_post;
-console.log("created token ", tokencreated);
-var message = {
+            
+            var tokencreated = fcmController.token_post;
+            console.log("created token ", tokencreated);
+            var message = {
     
-    "to": 
-        tokencreated
+            "to": 
+                tokencreated
     ,
     
     "notification" : {
@@ -46,5 +36,16 @@ fcm.send(message, function(err, response) {
         console.log("Success ", response);
     }
 });
+        }
+        catch(err){
+            console.log("Some ", err);
+            res.send({
+                status: false,
+                message: `err ${err}`,
+                });
+        }
+    }
+}
+
 
 module.exports = fcmController;
